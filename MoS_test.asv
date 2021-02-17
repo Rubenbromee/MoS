@@ -1,17 +1,15 @@
-% c = 343; % Speed of sound in room temperature
-delta_x = 0.01; % Spatial sampling step
-v = 343; % Wave velocity
+c = 343; % Speed of sound in room temperature
+delta_x = 0.001; % Spatial sampling step
 % delta_y = 0.01; % Spatial sampling step
-m = 101; % Room length
-n = 101; % Room width
+m = 71; % Room length
+n = 71; % Room width
 %x(:,1) = (0:m - 1) * delta_x; %Spatial visualization vector
 %y(:,1) = (0:n - 1) * delta_y; %Spatial visualization vector
 origo_m = ceil(m/2); % Length midpoint
 origo_n = ceil(n/2); % Width midpoint
 f = 100; % Sound frequency
 n_t = 501; % Number of time steps
-delta_t = 0.0001; % Time step
-c = v * (delta_t / delta_x);
+delta_t = 0.001; % Time step
 t(:, 1) = (0:n_t-1) * delta_t; % Temporal visualization vector
 P = zeros(n_t, m, n); % Room visualization matrix
 
@@ -31,7 +29,11 @@ end
 for j = 3:n_t % Iteration over time
     for k = 2:m-1 % Iteration over length
         for l = 2:n-1 % Iteration over width
-            P(j+1, k, l) =  c^2 * ... % c^2 should be here
+            P(j+1, k, l) = (delta_t^2 / delta_x^2) * ... % c^2 should be here
+            (P(j, k + 1, l) - 4 * P(j, k, l) + P(j, k - 1, l ) + ... 
+            P(j, k, l + 1) + P(j, k - 1, l - 1)) + ...
+            2 * P(j, k, l) - P(j - 1, k, l) + ... 
+            (delta_t^2 / delta_x^2) * ... % c^2 should be here
             (P(j, k + 1, l) - 4 * P(j, k, l) + P(j, k - 1, l ) + ... 
             P(j, k, l + 1) + P(j, k - 1, l - 1)) + ...
             2 * P(j, k, l) - P(j - 1, k, l);
