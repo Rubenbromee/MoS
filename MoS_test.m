@@ -23,13 +23,23 @@ for i = 1:2
     P((1:n_t), origo_m, origo_n - i) = sin(2*pi*f.*t(1:n_t));
 end
 
+% P(1, origo_m, origo_n) = 1; 
+% P(1, origo_m + 1, origo_n + 1) = 1;
+% P(1, origo_m - 1, origo_n + 1) = 1;
+% P(1, origo_m - 1, origo_n - 1) = 1;
+% P(1, origo_m + 1, origo_n - 1) = 1;
+% P(1, origo_m + 1, origo_n) = 1; 
+% P(1, origo_m - 1, origo_n) = 1;
+% P(1, origo_m, origo_n + 1) = 1;
+% P(1, origo_m, origo_n - 1) = 1;
+
 % Accoustic wave equation implemented numerically
-for j = 2:n_t % Iteration over time
+for j = 2:n_t-1 % Iteration over time
     for k = 2:m-1 % Iteration over length
         for l = 2:n-1 % Iteration over width
-            P(j+1, k, l) =  c^2 * ... 
+            P(j+1, k, l) = P(j+1, k, l) + c^2 * ... 
             (P(j, k + 1, l) - 4 * P(j, k, l) + P(j, k - 1, l ) + ... 
-            P(j, k, l + 1) + P(j, k - 1, l - 1)) + ...
+            P(j, k, l + 1) + P(j, k, l - 1)) + ...
             2 * P(j, k, l) - P(j - 1, k, l);
         end
     end
