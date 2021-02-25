@@ -4,9 +4,11 @@ const camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.inner
 const renderer = new THREE.WebGLRenderer();
 renderer.setSize( window.innerWidth, window.innerHeight );
 document.body.appendChild( renderer.domElement );
+const fs = require('fs');
 
 //code starts here
 camera.position.z = 5;
+scene1 = fs.readFile("jason.json");
 
 //render loop
 function animate() {

@@ -1,7 +1,7 @@
 delta_x = 0.1; % Spatial sampling step
 v = 343; % Wave velocity for sound in room temperature air
 m = 101; % Room length
-n = 201; % Room width
+n = 101; % Room width
 origo_m = ceil(m/2); % Length midpoint
 origo_n = ceil(n/2); % Width midpoint
 f = 100; % Sound frequency
@@ -50,3 +50,8 @@ for i = 1:n_t
     writeVideo(movie_obj, F);
 end
 close(movie_obj);
+
+json_info = jsonencode(P(:,:,:));
+json_file = fopen('jason.json', 'w');
+fwrite(json_file, json_info, 'char');
+fclose(json_file);
