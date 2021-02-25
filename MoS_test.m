@@ -11,33 +11,23 @@ c = v * (delta_t / delta_x);
 t(:, 1) = (0:n_t-1) * delta_t; % Temporal visualization vector
 P = zeros(n_t, m, n); % Room visualization matrix
 
-% Initial conditions, sound wave emitting from the middle of the room
 for i = 1:2
-    P((1:n_t), origo_m + i, origo_n + i) = sin(2*pi*f.*t(1:n_t)); 
-    P((1:n_t), origo_m - i, origo_n + i) = sin(2*pi*f.*t(1:n_t));
-    P((1:n_t), origo_m - i, origo_n - i) = sin(2*pi*f.*t(1:n_t));
-    P((1:n_t), origo_m + i, origo_n - i) = sin(2*pi*f.*t(1:n_t));
-    P((1:n_t), origo_m + i, origo_n) = sin(2*pi*f.*t(1:n_t)); 
-    P((1:n_t), origo_m - i, origo_n) = sin(2*pi*f.*t(1:n_t));
-    P((1:n_t), origo_m, origo_n + i) = sin(2*pi*f.*t(1:n_t));
-    P((1:n_t), origo_m, origo_n - i) = sin(2*pi*f.*t(1:n_t));
+P(i, origo_m, origo_n) = 1;
+P(i, origo_m + 1, origo_n + 1) = 1;
+P(i, origo_m - 1, origo_n + 1) = 1;
+P(i, origo_m - 1, origo_n - 1) = 1;
+P(i, origo_m + 1, origo_n - 1) = 1;
+P(i, origo_m + 1, origo_n) = 1; 
+P(i, origo_m - 1, origo_n) = 1;
+P(i, origo_m, origo_n + 1) = 1;
+P(i, origo_m, origo_n - 1) = 1;
 end
 
-% P(1, origo_m, origo_n) = 1; 
-% P(1, origo_m + 1, origo_n + 1) = 1;
-% P(1, origo_m - 1, origo_n + 1) = 1;
-% P(1, origo_m - 1, origo_n - 1) = 1;
-% P(1, origo_m + 1, origo_n - 1) = 1;
-% P(1, origo_m + 1, origo_n) = 1; 
-% P(1, origo_m - 1, origo_n) = 1;
-% P(1, origo_m, origo_n + 1) = 1;
-% P(1, origo_m, origo_n - 1) = 1;
-
 % Accoustic wave equation implemented numerically
-for j = 2:n_t-1 % Iteration over time
+for j = 3:n_t-1 % Iteration over time
     for k = 2:m-1 % Iteration over length
         for l = 2:n-1 % Iteration over width
-            P(j+1, k, l) = P(j+1, k, l) + c^2 * ... 
+            P(j+1, k, l) = c^2 * ... 
             (P(j, k + 1, l) - 4 * P(j, k, l) + P(j, k - 1, l ) + ... 
             P(j, k, l + 1) + P(j, k, l - 1)) + ...
             2 * P(j, k, l) - P(j - 1, k, l);
@@ -46,12 +36,13 @@ for j = 2:n_t-1 % Iteration over time
 end
 
 % Animation and video write loop
-movie_obj = VideoWriter('wave_prop.avi');
+movie_obj = VideoWriter('wave_prop.mj2', 'Motion JPEG AVI');
+movie_obj.Quality = 95;
 open(movie_obj);
 fig = figure(1);
 for i = 1:n_t
     i_p(:, :) = P(i , :, :);
-    s = i_p(:,:)./max(i_p(:, :));
+    s = abs(i_p(:,:));
     imshow(s(:, :), 'InitialMagnification', 600);
     drawnow;
     F = getframe(fig);
