@@ -5,7 +5,7 @@ n = 201; % Room width
 origo_m = ceil(m/2); % Length midpoint
 origo_n = ceil(n/2); % Width midpoint
 f = 500; % Sound frequency
-n_t = 501; % Number of time steps
+n_t = 1001; % Number of time steps
 delta_t = 0.0001; % Time step
 c = v * (delta_t / delta_x); % Sound constant
 P = zeros(n_t, m, n); % Room visualization matrix
@@ -58,7 +58,8 @@ fig = figure(1);
 for i = 1:n_t
     i_p(:, :) = P(i , :, :);
     s = abs(i_p(:,:));
-    imshow(s(:, :), 'InitialMagnification', 600);
+    imshow(s(:, :), 'InitialMagnification', 600, 'Interpolation', 'bilinear');
+    colormap default;
     drawnow;
     F = getframe(fig);
     writeVideo(movie_obj, F);
