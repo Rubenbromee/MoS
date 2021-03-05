@@ -99,16 +99,16 @@ for j = 2:n_t-1 % Iteration over time
 end
 
 % Animation and video write loop
-movie_obj = VideoWriter('wave_prop_impulse_flashing_3D.avi');
-open(movie_obj);
+% movie_obj = VideoWriter('wave_prop_impulse_flashing_3D.avi');
+% open(movie_obj);
 fig = figure(1);
 for i = 1:n_t
     i_p(:, :, :) = P(i , :, :, :);
-    s = abs(i_p(:,:));
-    imshow3D(s(:, :), 'InitialMagnification', 600, 'Interpolation', 'bilinear');
+    s = abs(i_p(:, :, :));
+    imshow3D(s(:, :, :), 'InitialMagnification', 600, 'Interpolation', 'bilinear');
     colormap default;
     drawnow;
-    F = getframe(fig);
-    writeVideo(movie_obj, F);
+%     F = getframe(fig);
+%     writeVideo(movie_obj, F);
 end
-close(movie_obj);
+% close(movie_obj);
