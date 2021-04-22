@@ -29,18 +29,18 @@ P(1, origo_m, origo_n - 1) = 1;
 
 % Accoustic wave equation implemented numerically
 for j = 2:n_t-1 % Iteration over time
-    % Create new impulse according to frequency
-    if mod(j, period_n_t) == 0
-        P(j, origo_m, origo_n) = 1;
-        P(j, origo_m + 1, origo_n + 1) = 1;
-        P(j, origo_m - 1, origo_n + 1) = 1;
-        P(j, origo_m - 1, origo_n - 1) = 1;
-        P(j, origo_m + 1, origo_n - 1) = 1;
-        P(j, origo_m + 1, origo_n) = 1; 
-        P(j, origo_m - 1, origo_n) = 1;
-        P(j, origo_m, origo_n + 1) = 1;
-        P(j, origo_m, origo_n - 1) = 1;
-   end
+%     % Create new impulse according to frequency
+%     if mod(j, period_n_t) == 0
+%         P(j, origo_m, origo_n) = 1;
+%         P(j, origo_m + 1, origo_n + 1) = 1;
+%         P(j, origo_m - 1, origo_n + 1) = 1;
+%         P(j, origo_m - 1, origo_n - 1) = 1;
+%         P(j, origo_m + 1, origo_n - 1) = 1;
+%         P(j, origo_m + 1, origo_n) = 1; 
+%         P(j, origo_m - 1, origo_n) = 1;
+%         P(j, origo_m, origo_n + 1) = 1;
+%         P(j, origo_m, origo_n - 1) = 1;
+%    end
     for k = 2:m-1 % Iteration over length
         for l = 2:n-1 % Iteration over width
             P(j+1, k, l) = c^2 * ... 
@@ -52,14 +52,14 @@ for j = 2:n_t-1 % Iteration over time
 end
 
 % Animation and video write loop
-movie_obj = VideoWriter('wave_prop_impulse_flashing.avi');
+movie_obj = VideoWriter('wave_prop_simple.avi');
 open(movie_obj);
 fig = figure(1);
 for i = 1:n_t
     i_p(:, :) = P(i , :, :);
     s = abs(i_p(:,:));
-    imshow(s(:, :), 'InitialMagnification', 600, 'Interpolation', 'bilinear');
-    colormap default;
+    imshow(s(:, :), 'InitialMagnification', 600);
+%     colormap default;
     drawnow;
     F = getframe(fig);
     writeVideo(movie_obj, F);
